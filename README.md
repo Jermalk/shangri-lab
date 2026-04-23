@@ -46,7 +46,7 @@ A collection of experiments, working prototypes, and honest field notes from som
 
 ---
 
-### \U0001f5a5\ufe0f [ov-server](./ov-server)
+### [ov-server](./ov-server)
 
 An OpenAI-compatible REST API server backed by `openvino_genai`. Exposes `/v1/chat/completions`, `/v1/embeddings`, and `/v1/models` on port `11435` \u2014 drop-in replacement for OpenAI API in local tooling (AnythingLLM, LangChain, etc.).
 
@@ -69,7 +69,7 @@ An OpenAI-compatible REST API server backed by `openvino_genai`. Exposes `/v1/ch
 
 ---
 
-### \U0001f4ca [ov-monitor](./ov-monitor)
+### [ov-monitor](./ov-monitor)
 
 A rich terminal monitor for the OpenVINO server and Intel Arc GPU. Reads hardware metrics directly from kernel interfaces \u2014 no root required, no `intel_gpu_top` dependency.
 
@@ -90,7 +90,7 @@ A rich terminal monitor for the OpenVINO server and Intel Arc GPU. Reads hardwar
 
 ---
 
-### \U0001f50d [scraper-pipeline](./scraper-pipeline) *(in progress)*
+### [scraper-pipeline](./scraper-pipeline) *(in progress)*
 
 A two-stage local LLM pipeline for scraping and analyzing offers from the web.
 
