@@ -1,7 +1,10 @@
 # ov_monitor
 
-Real-time GPU monitor for Intel Arc on the `xe` kernel driver. Displays engine utilisation, VRAM usage per process, power draw, temperature, and fan speed in a terminal UI.
+Real-time GPU monitor for Intel Arc on the `xe` kernel driver. 
+Displays engine utilisation, VRAM usage per process, power draw, temperature, and fan speed in a terminal UI.
+
 ![ov_monitor running on EnvyStorm](pics/ov_monitor.png)
+
 ## Why this exists
 
 `intel_gpu_top -J` is broken on the `xe` driver on recent kernels. This is the workaround.
