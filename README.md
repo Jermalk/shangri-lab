@@ -1,4 +1,4 @@
-# Shangri-Lab \U0001f3d4\ufe0f
+# Shangri-Lab 
 
 > *The pursuit of the perfect local LLM pipeline. The journey is the point.*
 
