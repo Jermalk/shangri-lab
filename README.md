@@ -2,7 +2,7 @@
 
 > *The pursuit of the perfect local LLM pipeline. The journey is the point.*
 
-A personal lab for experimenting with local LLM pipelines, agentic workflows, and AI-assisted tooling - built by a .NET developer learning Python, running entirely on local hardware with **Intel Arc B60 24GB and OpenVINO**.
+A personal lab for experimenting with local LLM pipelines, agentic workflows, and AI-assisted tooling. Built by a .NET developer learning Python, running entirely on local hardware with **Intel Arc B60 24GB and OpenVINO**.
 
 No cloud APIs. No GPU rental. No magic frameworks yet.
 
