@@ -2,9 +2,9 @@
 
 > *The pursuit of the perfect local LLM pipeline. The journey is the point.*
 
-A personal lab for experimenting with local LLM pipelines, agentic workflows, and AI-assisted tooling \u2014 built by a .NET developer learning Python, running entirely on local hardware with Intel Arc and OpenVINO.
+A personal lab for experimenting with local LLM pipelines, agentic workflows, and AI-assisted tooling - built by a .NET developer learning Python, running entirely on local hardware with **Intel Arc B60 24GB and OpenVINO**.
 
-No cloud APIs. No GPU rental. No magic frameworks \u2014 yet.
+No cloud APIs. No GPU rental. No magic frameworks yet.
 
 ---
 
@@ -13,9 +13,9 @@ No cloud APIs. No GPU rental. No magic frameworks \u2014 yet.
 A collection of experiments, working prototypes, and honest field notes from someone who:
 
 - Comes from .NET, systems architecture, and automation backgrounds
-- Is **not** a Python specialist \u2014 code here is explicit over clever
+- Is **not** a Python specialist code here is explicit over clever
 - Runs everything locally on Intel Arc B580 with OpenVINO
-- Values **observability** over abstraction \u2014 if I can't see what's happening, it doesn't count as working
+- Values **observability** over abstraction if I can't see what's happening, it doesn't count as working
 
 ---
 
@@ -26,7 +26,7 @@ A collection of experiments, working prototypes, and honest field notes from som
 | EnvyStorm | i7-12700K, 64GB RAM, Arc B580 24GB VRAM, Linux | Primary inference server |
 | NAS | Ryzen, 16GB RAM, Linux | Docker farm (planned) |
 
-**Inference stack:** Intel OpenVINO \u2014 not Ollama, not CUDA. If you're running Arc and struggling to find practical examples which works, you're in the right place.
+**Inference stack:** Intel OpenVINO not Ollama, not CUDA. If you're running Arc and struggling to find practical examples which works, you're in the right place.
 
 ---
 
@@ -35,10 +35,10 @@ A collection of experiments, working prototypes, and honest field notes from som
 | Model | Purpose | Throughput |
 |---|---|---|
 | `qwen3-8b-int4-ov` | Fast pre-selection, filtering | ~105 t/s |
-| `qwen3-14b-int4-ov` | Main reasoning, summarization | \u2014 |
-| `qwen2.5-coder-14b-int4` | Code-related tasks | \u2014 |
-| `qwen2.5-vl-7b-int4-ov` | Multimodal / image input - custom conversion to ov format| \u2014 |
-| `multilingual-e5-large-int8` | Embeddings, RAG, deduplication | \u2014 |
+| `qwen3-14b-int4-ov` | Main reasoning, summarization | ~40t/s |
+| `qwen2.5-coder-14b-int4` | Code-related tasks | ~40t/s |
+| `qwen2.5-vl-7b-int4-ov` | Multimodal / image input - custom conversion to ov format| not benchmarked yet |
+| `multilingual-e5-large-int8` | Embeddings, RAG, deduplication | not benchmarked yet |
 
 ---
 
@@ -48,34 +48,34 @@ A collection of experiments, working prototypes, and honest field notes from som
 
 ### [ov-server](./ov-server)
 
-An OpenAI-compatible REST API server backed by `openvino_genai`. Exposes `/v1/chat/completions`, `/v1/embeddings`, and `/v1/models` on port `11435` \u2014 drop-in replacement for OpenAI API in local tooling (AnythingLLM, LangChain, etc.).
+An OpenAI-compatible REST API server backed by `openvino_genai`. Exposes `/v1/chat/completions`, `/v1/embeddings`, and `/v1/models` on port `11435` drop-in replacement for OpenAI API in local tooling (AnythingLLM, LangChain, etc.).
 
 **What it does:**
 - Serves multiple Qwen INT4 models from Intel Arc via OpenVINO
 - Full streaming support via `AsyncTokenStreamer` (real token-by-token, not buffered)
-- Vision/multimodal support \u2014 routes image-containing requests to `VLMPipeline` automatically
-- Tool call support \u2014 parses Qwen `<tool_call>` blocks, returns OpenAI-compatible `tool_calls` response
-- LRU model eviction with VRAM headroom checks \u2014 keeps up to 2 models loaded simultaneously
-- Thinking block extraction \u2014 separates `<think>...</think>` from answer, formats for display
+- Vision/multimodal support routes image-containing requests to `VLMPipeline` automatically
+- Tool call support  parses Qwen `<tool_call>` blocks, returns OpenAI-compatible `tool_calls` response
+- LRU model eviction with VRAM headroom checks keeps up to 2 models loaded simultaneously
+- Thinking block extraction separates `<think>...</think>` from answer, formats for display
 - `/health` endpoint with live stats: throughput, token counts, loaded models, RAM
 
 **Notable engineering decisions:**
-- Direct `sysfs`/`fdinfo` VRAM queries \u2014 no `nvidia-smi`, no `intel_gpu_top`
-- Event loop captured at streamer construction time \u2014 fixes `get_event_loop()` deprecation in threaded streaming
-- Per-model `asyncio.Lock` \u2014 concurrent requests on different models run in parallel; same model is serialised
-- Single-file server by design \u2014 keeps deployment simple
+- Direct `sysfs`/`fdinfo` VRAM queries no `nvidia-smi`, no `intel_gpu_top`
+- Event loop captured at streamer construction time fixes `get_event_loop()` deprecation in threaded streaming
+- Per-model `asyncio.Lock` concurrent requests on different models run in parallel; same model is serialised
+- Single-file server by design keeps deployment simple
 
-**Status:** \u2705 Working in production on EnvyStorm
+**Status:** Working in production on EnvyStorm
 
 ---
 
 ### [ov-monitor](./ov-monitor)
 
-A rich terminal monitor for the OpenVINO server and Intel Arc GPU. Reads hardware metrics directly from kernel interfaces \u2014 no root required, no `intel_gpu_top` dependency.
+A rich terminal monitor for the OpenVINO server and Intel Arc GPU. Reads hardware metrics directly from kernel interfaces no root required, no `intel_gpu_top` dependency.
 
 **What it shows:**
 - Server status: busy/online, loaded models, last throughput, total request/token counts
-- GPU engine utilisation by type: Render (rcs), Compute (ccs), Video (vcs), VideoEnh (vecs), Blitter (bcs) \u2014 from `fdinfo` cycle counter deltas
+- GPU engine utilisation by type: Render (rcs), Compute (ccs), Video (vcs), VideoEnh (vecs), Blitter (bcs) from `fdinfo` cycle counter deltas
 - VRAM usage: global from `vram0_mm` + per-process breakdown via `/proc/<pid>/fdinfo`
 - GPU temperature (GT + VRAM), fan RPM, instantaneous power from energy counter delta
 - CPU per-core utilisation, frequency, load averages, temperatures
@@ -83,10 +83,10 @@ A rich terminal monitor for the OpenVINO server and Intel Arc GPU. Reads hardwar
 
 **What makes it interesting:**
 - Engine utilisation computed from `drm-cycles-*` / `drm-total-cycles-*` counter deltas in `/proc/<pid>/fdinfo` \u2014 works on xe driver where `intel_gpu_top -J` is broken
-- VRAM per process without root \u2014 reads `drm-total-vram0` from fdinfo, no debugfs clients required
+- VRAM per process without root reads `drm-total-vram0` from fdinfo, no debugfs clients required
 - Instantaneous power derived from `energy1_input` hwmon delta between polls
 
-**Status:** \u2705 Working on xe driver (Arc B580)
+**Status:** Working on xe driver (Arc B580)
 
 ---
 
@@ -96,15 +96,15 @@ A two-stage local LLM pipeline for scraping and analyzing offers from the web.
 
 **Architecture:**
 ```
-URL list \u2192 Scraper \u2192 Qwen3-8b (pre-selector) \u2192 Qwen3-14b (summarizer) \u2192 structured output
+URL list Scraper - Qwen3-8b (pre-selector) \ Qwen3-14b (summarizer) \ structured output
 ```
 
 **Design goals:**
-- Full observability \u2014 every stage logged, every model decision visible
-- No black boxes \u2014 raw model output always captured before parsing
-- Built step by step \u2014 baseline first, frameworks later if at all
+- Full observability - every stage logged, every model decision visible
+- No black boxes - raw model output always captured before parsing
+- Built step by step - baseline first, frameworks later if at all
 
-**Status:** \U0001f6a7 In progress
+**Status:**  In progress
 
 ---
 
@@ -114,26 +114,26 @@ URL list \u2192 Scraper \u2192 Qwen3-8b (pre-selector) \u2192 Qwen3-14b (summari
 > Tune quality only after you can observe it.  
 > Shangri-Lab is not a framework. It is a small, well-understood pipeline where every step is visible and trustworthy.
 
-This lab exists because most local LLM content assumes Nvidia hardware, Python expertise, and comfort with heavyweight frameworks. These experiments assume none of those things.
+*This lab exists because most local LLM content assumes Nvidia hardware, Python expertise, and comfort with heavyweight frameworks. These experiments assume none of those things.*
 
-If something works here, it's because it actually works \u2014 not because a framework hid the failure.
+If something works here, it's because it actually works - not because a framework hid the failure.
 
 ---
 
 ## What you might find useful here
 
 - **Intel Arc + OpenVINO** practical setup and model conversion notes
-- **Qwen model recipes** for INT4 quantized inference on OpenVINO \u2014 including VLM and coder variants
+- **Qwen model recipes** for INT4 quantized inference on OpenVINO including VLM and coder variants
 - **OpenAI-compatible local server** that actually works with AnythingLLM, LangChain, and similar tools
-- **xe driver GPU monitoring** without intel_gpu_top \u2014 sysfs/fdinfo approach for Arc cards
-- **Two-stage pipeline patterns** \u2014 fast filter model + heavy reasoning model
-- **Honest failure notes** \u2014 what didn't work and why
+- **xe driver GPU monitoring** without intel_gpu_top - sysfs/fdinfo approach for Arc cards
+- **Two-stage pipeline patterns** - fast filter model + heavy reasoning model
+- **Honest failure notes** - what didn't work and why
 
 ---
 
 ## Status
 
-This is a personal lab, not a polished product. Things break. Approaches get abandoned. Notes are sometimes incomplete. That's the point.
+This is a personal lab, not a polished product. Things break. Approaches get abandoned. Notes are sometimes incomplete. That's the point (at least for now).
 
 ---
 
@@ -145,4 +145,4 @@ Learning Python one pipeline at a time.
 
 ---
 
-*Shangri-Lab \u2014 because the perfect pipeline is always just over the next mountain.*
+*Shangri-Lab - because the perfect pipeline is always just over the next mountain.*
