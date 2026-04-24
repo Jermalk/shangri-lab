@@ -23,7 +23,7 @@ A collection of experiments, working prototypes, and honest field notes from som
 
 | Machine | Specs | Role |
 |---|---|---|
-| EnvyStorm | i7-12700K, 64GB RAM, Arc B580 24GB VRAM, Linux | Primary inference server |
+| HP EnvyStorm | i7-12700K, 64GB RAM, Arc B60 24GB VRAM, Linux | Primary inference server |
 | NAS | Ryzen, 16GB RAM, Linux | Docker farm (planned) |
 
 **Inference stack:** Intel OpenVINO not Ollama, not CUDA. If you're running Arc and struggling to find practical examples which works, you're in the right place.
