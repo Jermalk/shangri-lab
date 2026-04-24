@@ -14,7 +14,7 @@ A collection of experiments, working prototypes, and honest field notes from som
 
 - Comes from .NET, systems architecture, and automation backgrounds
 - Is **not** a Python specialist code here is explicit over clever
-- Runs everything locally on Intel Arc B580 with OpenVINO
+- Runs everything locally on Intel Arc B60 24GB with OpenVINO
 - Values **observability** over abstraction if I can't see what's happening, it doesn't count as working
 
 ---
